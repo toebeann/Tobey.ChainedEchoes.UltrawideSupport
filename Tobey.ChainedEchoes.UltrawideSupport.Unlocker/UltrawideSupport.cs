@@ -26,12 +26,12 @@ namespace Tobey.ChainedEchoes.UltrawideSupport.Unlocker
                 try
                 {
                     EnableAspectRatioSupport(stream);
-                    Log.LogInfo("Aspect ratio support enabled.");
+                    Log.LogInfo("Ultrawide Support enabled.");
                 }
                 catch (Exception e)
                 {
                     Log.LogError(e);
-                    Log.LogWarning("Failed to enable aspect ratio support!");
+                    Log.LogWarning("Failed to enable Ultrawide Support!");
                 }
             }
         }
