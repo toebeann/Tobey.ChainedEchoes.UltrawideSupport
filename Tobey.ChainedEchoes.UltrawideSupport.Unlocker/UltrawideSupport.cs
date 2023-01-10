@@ -11,7 +11,7 @@ using System.Reflection;
 
 namespace Tobey.ChainedEchoes.UltrawideSupport.Unlocker
 {
-    public static class AspectRatioSupport
+    public static class UltrawideSupport
     {
         public static IEnumerable<string> TargetDLLs { get; } = new string[0];
         public static void Patch(AssemblyDefinition _) { }
@@ -25,7 +25,7 @@ namespace Tobey.ChainedEchoes.UltrawideSupport.Unlocker
             {
                 try
                 {
-                    EnableAspectRatioSupport(stream);
+                    EnableUltrawideSupport(stream);
                     Log.LogInfo("Ultrawide Support enabled.");
                 }
                 catch (Exception e)
@@ -38,7 +38,7 @@ namespace Tobey.ChainedEchoes.UltrawideSupport.Unlocker
 
         private static readonly ManualLogSource Log = Logger.CreateLogSource("Ultrawide Support");
 
-        private static void EnableAspectRatioSupport(Stream classPackageStream)
+        private static void EnableUltrawideSupport(Stream classPackageStream)
         {
             string globalGameManagersFileName = "globalgamemanagers";
             string dataDir = Path.GetFullPath(Path.Combine(Paths.ManagedPath, ".."));
