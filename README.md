@@ -13,7 +13,7 @@ Ever wished you could play Chained Echoes in ultrawide? Well, now you can!
 
 Chained Echoes was **_NOT_** meant to be played like this. You **_WILL_** see things the developers did not intend! For example UI elements that aren't supposed to be seen, sudden immersion-breaking map edges where sprites were only half-drawn by the devs, and potentially even spoilers where what were once off-screen characters are just standing on the edges waiting for their moment, plain for you to see!
 
-When it comes to the UI elements, I am attempting to resolve these to the best of my abilities, but please note that there's gonna be things I've missed - especially since I've not began the journey to Tormund yet! I'll be making updates and fixes as I play through the game, so **check back regularly for updates!**
+When it comes to the UI elements, I am attempting to resolve these to the best of my abilities, but please note that there's gonna be things I've missed - especially since I've not began the journey to Tormund yet! I'll be making updates and fixes as I play through the game, **so check back regularly for updates!**
 
 ## Installation
 
