@@ -54,6 +54,7 @@ public class UltrawideSupport : BaseUnityPlugin
         StartCoroutine(HidePartyField());
         StartCoroutine(FixFleeField());
         StartCoroutine(FixSkillNameBox());
+        FixStartMenuSterenritt();
     }
 
     private IEnumerator RemoveBorders()
@@ -116,11 +117,18 @@ public class UltrawideSupport : BaseUnityPlugin
             );
     }
 
+    private static void FixStartMenuSterenritt()
+    {
+        if (SceneManager.GetActiveScene().name == "StartMenu")
+        {
+            GameObject.Find("__Environment/sr_sternenritt_U3")?.SetActive(false);
+        }
+    }
+
     private void OnEnable() => Harmony.PatchAll(typeof(UltrawideSupport));
     private void OnDisable() => Harmony.UnpatchSelf();
 
     [HarmonyPatch(typeof(SplashScreenAnimation), nameof(SplashScreenAnimation.AnimationFinished))]
-    [HarmonyPatch(typeof(StartMenu), nameof(StartMenu.Start))]
     [HarmonyPatch(typeof(MainMenuSystem), nameof(MainMenuSystem.ExecuteSettings))]
     [HarmonyPostfix, HarmonyWrapSafe]
     public static void SetUltrawideResolution()
@@ -132,8 +140,13 @@ public class UltrawideSupport : BaseUnityPlugin
     [HarmonyPatch(typeof(BattleTrigger), nameof(BattleTrigger.MoveToPos))]
     [HarmonyPrefix, HarmonyWrapSafe]
     public static void BattleTrigger_Prefix() => Instance.StartCoroutine(BattleTriggered());
-    
+
     [HarmonyPatch(typeof(StartMenu), nameof(StartMenu.Start))]
     [HarmonyPostfix, HarmonyWrapSafe]
-    public static void StartMenu_Postfix() => Instance.StartCoroutine(FixStartMenuVignette());
+    public static void StartMenu_Postfix()
+    {
+        SetUltrawideResolution();
+        Instance.StartCoroutine(FixStartMenuVignette());
+        FixStartMenuSterenritt();
+    }
 }
