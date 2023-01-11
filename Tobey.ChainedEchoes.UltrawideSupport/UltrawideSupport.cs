@@ -59,6 +59,7 @@ public class UltrawideSupport : BaseUnityPlugin
             pp.refResolutionX = Convert.ToInt32(pp.refResolutionX / OriginalAspectRatio * CurrentAspectRatio);
         }
 
+        StartCoroutine(FixKeybindingsInfo());
         StartCoroutine(HidePartyField());
         StartCoroutine(FixFleeField());
         StartCoroutine(FixSkillNameBox());
@@ -156,6 +157,24 @@ public class UltrawideSupport : BaseUnityPlugin
         if (SceneManager.GetActiveScene().name == "StartMenu")
         {
             GameObject.Find("__Environment/sr_sternenritt_U3")?.SetActive(false);
+        }
+    }
+
+    private static IEnumerator FixKeybindingsInfo()
+    {
+        yield return new WaitWhile(() => PartyInfoBattle.instance == null);
+        var containerTransform = PartyInfoBattle.instance.transform.root.Find("KeybindingsInfo/Container");
+        containerTransform.localScale = new(
+            x: containerTransform.localScale.x / OriginalAspectRatio * CurrentAspectRatio,
+            y: containerTransform.localScale.y,
+            z: containerTransform.localScale.z);
+
+        foreach (Transform child in containerTransform)
+        {
+            child.localScale = new(
+                x: child.localScale.x / containerTransform.localScale.x,
+                y: child.localScale.y,
+                z: child.localScale.z);
         }
     }
 
