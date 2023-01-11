@@ -20,9 +20,9 @@ Ever wished you could play Chained Echoes in ultrawide? Well, now you can!
 
 ## Installation
 
-1. Install [BepInEx for Chained Echoes](https://github.com/toebeann/BepInEx.ChainedEchoes)
+1. Install [BepInEx for Chained Echoes](https://github.com/toebeann/BepInEx.ChainedEchoes).
 
-    BepInEx is a mod loader for Chained Echoes
+    BepInEx is a mod loader for Chained Echoes.
 
 2. Download and extract the contents of `Ultrawide Support.zip` into `<game folder>\BepInEx`.
 
