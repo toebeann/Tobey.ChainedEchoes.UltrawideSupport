@@ -23,13 +23,14 @@ Ever wished you could play Chained Echoes in ultrawide? Well, now you can!
 
 3. Launch the game and have fun!
 
-### Testing it's working
-
-You can easily check that Ultrawide Support is working by simply launching the game. If your Start Menu looks like this, you're set:
-
-![Start Menu with rolling clouds visible above pillarboxing](assets/Start%20Menu.png)
-
 ## Changelog
+
+### v0.1.2
+
+#### Ultrawide Optimisations
+
+-   Added the black borders back to the start menu as it is generally the most pleasing overall result [224e15f](https://github.com/toebeann/Tobey.ChainedEchoes.UltrawideSupport/commit/224e15fbb92833f9bfbb075a0790a9bad0c9afb9)
+-   Added a fix for the keybindings/pause screen so that the transparent background will now stretch to fill your screen [f5baa99](https://github.com/toebeann/Tobey.ChainedEchoes.UltrawideSupport/commit/f5baa99c12975e77b552b04849a8d90444f1b885)
 
 ### v0.1.1
 
