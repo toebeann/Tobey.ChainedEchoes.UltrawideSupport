@@ -124,7 +124,7 @@ public class UltrawideSupport : BaseUnityPlugin
     {
         yield return new WaitWhile(() => PartyInfoBattle.instance == null);
 
-        var fleeFieldTransform = PartyInfoBattle.instance.transform.root.Find("FleeCanvas").Find("FleeField") as RectTransform;
+        var fleeFieldTransform = PartyInfoBattle.instance.transform.root.Find("FleeCanvas/FleeField") as RectTransform;
         fleeFieldTransform.anchorMin = new(
             x: 1 - (Screen.height * OriginalAspectRatio / Screen.width),
             y: fleeFieldTransform.anchorMin.y
@@ -163,16 +163,20 @@ public class UltrawideSupport : BaseUnityPlugin
     private static IEnumerator FixKeybindingsInfo()
     {
         yield return new WaitWhile(() => PartyInfoBattle.instance == null);
-        var containerTransform = PartyInfoBattle.instance.transform.root.Find("KeybindingsInfo/Container");
-        containerTransform.localScale = new(
-            x: containerTransform.localScale.x / OriginalAspectRatio * CurrentAspectRatio,
-            y: containerTransform.localScale.y,
-            z: containerTransform.localScale.z);
+        StretchWidth(PartyInfoBattle.instance.transform.root.Find("KeybindingsInfo/Container"));
+    }
 
-        foreach (Transform child in containerTransform)
+    private static void StretchWidth(Transform container)
+    {
+        container.localScale = new(
+            x: container.localScale.x / OriginalAspectRatio * CurrentAspectRatio,
+            y: container.localScale.y,
+            z: container.localScale.z);
+
+        foreach (Transform child in container)
         {
             child.localScale = new(
-                x: child.localScale.x / containerTransform.localScale.x,
+                x: child.localScale.x / container.localScale.x,
                 y: child.localScale.y,
                 z: child.localScale.z);
         }
