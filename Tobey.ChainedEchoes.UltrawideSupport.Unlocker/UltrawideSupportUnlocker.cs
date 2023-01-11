@@ -11,7 +11,7 @@ using System.Reflection;
 
 namespace Tobey.ChainedEchoes.UltrawideSupport.Unlocker
 {
-    public static class UltrawideSupport
+    public static class UltrawideSupportUnlocker
     {
         public static IEnumerable<string> TargetDLLs { get; } = new string[0];
         public static void Patch(AssemblyDefinition _) { }
