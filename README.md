@@ -11,6 +11,11 @@ Ever wished you could play Chained Echoes in ultrawide? Well, now you can!
 -   Verified working on the latest Xbox/Microsoft/Windows store version of the game (v1.052 at time of writing).
 -   Adds ultrawide optimisations for various UI elements. This feature is still a work in progress as I am still actively playing through the game for the first time! Whenever I encounter something that needs tweaking I'll release a fix, so make sure to check back regularly for updates!
 
+## Notes
+
+-   The start menu will still be 16:9 for aesthetic purposes.
+-   This mod is a work in progress, updates will be released regularly.
+
 ## Installation
 
 1. Install [BepInEx for Chained Echoes](https://github.com/toebeann/BepInEx.ChainedEchoes)
