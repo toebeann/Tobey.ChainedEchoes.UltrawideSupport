@@ -56,7 +56,7 @@ public class UltrawideSupport : BaseUnityPlugin
         var pp = Camera.main.GetComponent<PixelPerfectCamera>();
         if (pp != null)
         {
-            pp.refResolutionX = Convert.ToInt32(pp.refResolutionX / OriginalAspectRatio * CurrentAspectRatio);
+            pp.refResolutionX = Mathf.RoundToInt(pp.refResolutionX / OriginalAspectRatio * CurrentAspectRatio);
         }
 
         StartCoroutine(FixKeybindingsInfo());
