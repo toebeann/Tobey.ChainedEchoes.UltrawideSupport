@@ -105,12 +105,25 @@ public class UltrawideSupport : BaseUnityPlugin
         );
     }
 
+    private static IEnumerator FixStartMenuVignette()
+    {
+        yield return new WaitWhile(() => PartyInfoBattle.instance == null);
+        var vignetteTransform = PartyInfoBattle.instance.transform.root.Find("StartMenu/StartMenuContainer/vignette") as RectTransform;
+        vignetteTransform.localScale = new(
+                x: Screen.width / (Screen.height * (16f / 9f)),
+                y: vignetteTransform.localScale.y,
+                z: vignetteTransform.localScale.z
+            );
+    }
+
     private void OnEnable() => Harmony.PatchAll(typeof(UltrawideSupport));
     private void OnDisable() => Harmony.UnpatchSelf();
 
     [HarmonyPatch(typeof(SplashScreenAnimation), nameof(SplashScreenAnimation.AnimationFinished))]
+    [HarmonyPatch(typeof(StartMenu), nameof(StartMenu.Start))]
+    [HarmonyPatch(typeof(MainMenuSystem), nameof(MainMenuSystem.ExecuteSettings))]
     [HarmonyPostfix, HarmonyWrapSafe]
-    public static void AnimationFinishedPostfix()
+    public static void SetUltrawideResolution()
     {
         var resolution = Screen.resolutions.Where(r => r.height == Screen.height).Last();
         Screen.SetResolution(resolution.width, resolution.height, true, resolution.refreshRate);
@@ -119,4 +132,8 @@ public class UltrawideSupport : BaseUnityPlugin
     [HarmonyPatch(typeof(BattleTrigger), nameof(BattleTrigger.MoveToPos))]
     [HarmonyPrefix, HarmonyWrapSafe]
     public static void BattleTrigger_Prefix() => Instance.StartCoroutine(BattleTriggered());
+    
+    [HarmonyPatch(typeof(StartMenu), nameof(StartMenu.Start))]
+    [HarmonyPostfix, HarmonyWrapSafe]
+    public static void StartMenu_Postfix() => Instance.StartCoroutine(FixStartMenuVignette());
 }

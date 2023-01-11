@@ -4,7 +4,7 @@
     <TargetFramework>net472</TargetFramework>
     <AssemblyName>Tobey.ChainedEchoes.UltrawideSupport</AssemblyName>
     <Description>Ever wished you could play Chained Echoes in ultrawide? Well, now you can!</Description>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <Product>Ultrawide Support</Product>
