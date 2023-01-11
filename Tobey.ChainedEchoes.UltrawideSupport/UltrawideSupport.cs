@@ -41,20 +41,20 @@ public class UltrawideSupport : BaseUnityPlugin
     private void SceneManager_activeSceneChanged(Scene from, Scene to)
     {
         if (to.name != "StartMenu") return;
-        SceneManager.activeSceneChanged -= SceneManager_activeSceneChanged;
+            SceneManager.activeSceneChanged -= SceneManager_activeSceneChanged;
 
         // fix the aspect ratio
         var pp = Camera.main.GetComponent<PixelPerfectCamera>();
         if (pp != null)
         {
-            pp.refResolutionX = Convert.ToInt32(Convert.ToSingle(pp.refResolutionX) / (16f / 9f) * (Convert.ToSingle(Screen.width) / Screen.height));
+            pp.refResolutionX = Convert.ToInt32(pp.refResolutionX / (16f / 9f) * ((float)Screen.width / Screen.height));
         }
 
         StartCoroutine(RemoveBorders());
         StartCoroutine(HidePartyField());
         StartCoroutine(FixFleeField());
         StartCoroutine(FixSkillNameBox());
-        FixStartMenuSterenritt();
+        FixStartMenuSternenritt();
     }
 
     private IEnumerator RemoveBorders()
@@ -117,7 +117,7 @@ public class UltrawideSupport : BaseUnityPlugin
             );
     }
 
-    private static void FixStartMenuSterenritt()
+    private static void FixStartMenuSternenritt()
     {
         if (SceneManager.GetActiveScene().name == "StartMenu")
         {
@@ -147,6 +147,6 @@ public class UltrawideSupport : BaseUnityPlugin
     {
         SetUltrawideResolution();
         instance.StartCoroutine(FixStartMenuVignette());
-        FixStartMenuSterenritt();
+        FixStartMenuSternenritt();
     }
 }
