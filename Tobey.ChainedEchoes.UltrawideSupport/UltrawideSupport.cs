@@ -13,6 +13,9 @@ namespace Tobey.ChainedEchoes.UltrawideSupport;
 [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
 public class UltrawideSupport : BaseUnityPlugin
 {
+    private const float OriginalAspectRatio = 16f / 9f;
+    private static float CurrentAspectRatio => (float)Screen.width / Screen.height;
+
     private static UltrawideSupport instance;
     private static ManualLogSource Log => instance.Logger;
 
@@ -41,13 +44,13 @@ public class UltrawideSupport : BaseUnityPlugin
     private void SceneManager_activeSceneChanged(Scene from, Scene to)
     {
         if (to.name != "StartMenu") return;
-            SceneManager.activeSceneChanged -= SceneManager_activeSceneChanged;
+        SceneManager.activeSceneChanged -= SceneManager_activeSceneChanged;
 
         // fix the aspect ratio
         var pp = Camera.main.GetComponent<PixelPerfectCamera>();
         if (pp != null)
         {
-            pp.refResolutionX = Convert.ToInt32(pp.refResolutionX / (16f / 9f) * ((float)Screen.width / Screen.height));
+            pp.refResolutionX = Convert.ToInt32(pp.refResolutionX / OriginalAspectRatio * CurrentAspectRatio);
         }
 
         StartCoroutine(RemoveBorders());
@@ -91,7 +94,7 @@ public class UltrawideSupport : BaseUnityPlugin
 
         var fleeFieldTransform = PartyInfoBattle.instance.transform.root.Find("FleeCanvas").Find("FleeField") as RectTransform;
         fleeFieldTransform.anchorMin = new(
-            x: 1 - (Screen.height * (16f / 9f) / Screen.width),
+            x: 1 - (Screen.height * OriginalAspectRatio / Screen.width),
             y: fleeFieldTransform.anchorMin.y
         );
     }
@@ -101,7 +104,7 @@ public class UltrawideSupport : BaseUnityPlugin
         yield return new WaitWhile(() => PartyInfoBattle.instance == null);
         var skillNameBoxTransform = PartyInfoBattle.instance.transform.Find("skillNameBox") as RectTransform;
         skillNameBoxTransform.anchorMin = new(
-            x: (Screen.height * (16f / 9f) / Screen.width),
+            x: (Screen.height * OriginalAspectRatio / Screen.width),
             y: skillNameBoxTransform.anchorMin.y
         );
     }
@@ -111,7 +114,7 @@ public class UltrawideSupport : BaseUnityPlugin
         yield return new WaitWhile(() => PartyInfoBattle.instance == null);
         var vignetteTransform = PartyInfoBattle.instance.transform.root.Find("StartMenu/StartMenuContainer/vignette") as RectTransform;
         vignetteTransform.localScale = new(
-                x: Screen.width / (Screen.height * (16f / 9f)),
+                x: Screen.width / (Screen.height * OriginalAspectRatio),
                 y: vignetteTransform.localScale.y,
                 z: vignetteTransform.localScale.z
             );
