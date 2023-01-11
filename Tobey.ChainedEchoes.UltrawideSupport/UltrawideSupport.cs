@@ -43,9 +43,15 @@ public class UltrawideSupport : BaseUnityPlugin
 
     private void SceneManager_activeSceneChanged(Scene from, Scene to)
     {
-        if (to.name != "StartMenu") return;
-        SceneManager.activeSceneChanged -= SceneManager_activeSceneChanged;
+        if (to.name == "StartMenu")
+        {
+            SetupStartMenu();
+            SceneManager.activeSceneChanged -= SceneManager_activeSceneChanged;
+        }
+    }
 
+    private void SetupStartMenu()
+    {
         // fix the aspect ratio
         var pp = Camera.main.GetComponent<PixelPerfectCamera>();
         if (pp != null)
@@ -53,11 +59,36 @@ public class UltrawideSupport : BaseUnityPlugin
             pp.refResolutionX = Convert.ToInt32(pp.refResolutionX / OriginalAspectRatio * CurrentAspectRatio);
         }
 
-        StartCoroutine(RemoveBorders());
         StartCoroutine(HidePartyField());
         StartCoroutine(FixFleeField());
         StartCoroutine(FixSkillNameBox());
+        StartCoroutine(FixBorders());
         FixStartMenuSternenritt();
+
+        SceneManager.sceneLoaded -= SceneManager_sceneLoaded;
+        SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+    }
+
+    private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name != "StartMenu")
+        {
+            StartCoroutine(RemoveBorders());
+            SceneManager.sceneLoaded -= SceneManager_sceneLoaded;
+        }
+    }
+
+    private IEnumerator FixBorders()
+    {
+        yield return new WaitWhile(() => PartyInfoBattle.instance == null);
+
+        foreach (Transform child in PartyInfoBattle.instance.transform.root.Find("Border"))
+        {
+            child.localPosition = new(
+                x: child.localPosition.x < 0 ? (float)Math.Truncate(child.localPosition.x) : Mathf.Round(child.localPosition.x),
+                y: child.localPosition.y,
+                z: child.localPosition.z);
+        }
     }
 
     private IEnumerator RemoveBorders()
