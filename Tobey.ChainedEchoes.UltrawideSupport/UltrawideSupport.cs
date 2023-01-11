@@ -13,19 +13,19 @@ namespace Tobey.ChainedEchoes.UltrawideSupport;
 [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
 public class UltrawideSupport : BaseUnityPlugin
 {
-    internal static UltrawideSupport Instance;
-    internal static ManualLogSource Log => Instance.Logger;
+    private static UltrawideSupport instance;
+    private static ManualLogSource Log => instance.Logger;
 
-    internal Harmony Harmony = new(PluginInfo.PLUGIN_GUID);
+    private Harmony harmony = new(PluginInfo.PLUGIN_GUID);
 
     private void Awake()
     {
         // enforce singleton
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this;
+            instance = this;
         }
-        else if (Instance != this)
+        else if (instance != this)
         {
             Destroy(this);
             return;
@@ -125,8 +125,8 @@ public class UltrawideSupport : BaseUnityPlugin
         }
     }
 
-    private void OnEnable() => Harmony.PatchAll(typeof(UltrawideSupport));
-    private void OnDisable() => Harmony.UnpatchSelf();
+    private void OnEnable() => harmony.PatchAll(typeof(UltrawideSupport));
+    private void OnDisable() => harmony.UnpatchSelf();
 
     [HarmonyPatch(typeof(SplashScreenAnimation), nameof(SplashScreenAnimation.AnimationFinished))]
     [HarmonyPatch(typeof(MainMenuSystem), nameof(MainMenuSystem.ExecuteSettings))]
@@ -139,14 +139,14 @@ public class UltrawideSupport : BaseUnityPlugin
 
     [HarmonyPatch(typeof(BattleTrigger), nameof(BattleTrigger.MoveToPos))]
     [HarmonyPrefix, HarmonyWrapSafe]
-    public static void BattleTrigger_Prefix() => Instance.StartCoroutine(BattleTriggered());
+    public static void BattleTrigger_Prefix() => instance.StartCoroutine(BattleTriggered());
 
     [HarmonyPatch(typeof(StartMenu), nameof(StartMenu.Start))]
     [HarmonyPostfix, HarmonyWrapSafe]
     public static void StartMenu_Postfix()
     {
         SetUltrawideResolution();
-        Instance.StartCoroutine(FixStartMenuVignette());
+        instance.StartCoroutine(FixStartMenuVignette());
         FixStartMenuSterenritt();
     }
 }
