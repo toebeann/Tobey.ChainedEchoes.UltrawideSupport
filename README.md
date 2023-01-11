@@ -14,6 +14,8 @@ Ever wished you could play Chained Echoes in ultrawide? Well, now you can!
 ## Notes
 
 -   The start menu will still be 16:9 for aesthetic purposes.
+-   It's normal for there to be black bars at the sides of the screen during certain scenes.
+-   You're gonna see some things that the developer didn't intend you to see!
 -   This mod is a work in progress, updates will be released regularly.
 
 ## Installation
