@@ -1,15 +1,16 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using PixelCrushers;
 using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Tobey.ChainedEchoes.UltrawideSupport;
+using UnityEngine.Experimental.Rendering.Universal;
 [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
 public class UltrawideSupport : BaseUnityPlugin
 {
@@ -163,23 +164,24 @@ public class UltrawideSupport : BaseUnityPlugin
     private static IEnumerator FixKeybindingsInfo()
     {
         yield return new WaitWhile(() => PartyInfoBattle.instance == null);
-        StretchWidth(PartyInfoBattle.instance.transform.root.Find("KeybindingsInfo/Container"));
+        StretchImageWidth(PartyInfoBattle.instance.transform.root.Find("KeybindingsInfo/Container"));
     }
 
-    private static void StretchWidth(Transform container)
+    private static void StretchImageWidth(Transform container)
     {
-        container.localScale = new(
+        var clone = Instantiate(container.gameObject, container.parent);
+        foreach (Transform child in clone.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        clone.transform.SetAsFirstSibling();
+
+        clone.transform.localScale = new(
             x: container.localScale.x / OriginalAspectRatio * CurrentAspectRatio,
             y: container.localScale.y,
             z: container.localScale.z);
 
-        foreach (Transform child in container)
-        {
-            child.localScale = new(
-                x: child.localScale.x / container.localScale.x,
-                y: child.localScale.y,
-                z: child.localScale.z);
-        }
+        container.GetComponent<Image>().enabled = false;
     }
 
     private void OnEnable() => harmony.PatchAll(typeof(UltrawideSupport));
@@ -205,5 +207,15 @@ public class UltrawideSupport : BaseUnityPlugin
         SetUltrawideResolution();
         instance.StartCoroutine(FixStartMenuVignette());
         FixStartMenuSternenritt();
+    }
+
+    [HarmonyPatch(typeof(UIPanel), nameof(UIPanel.Start))]
+    [HarmonyPostfix, HarmonyWrapSafe]
+    public static void Dialogue_UIPanel_Start_Postfix(UIPanel __instance)
+    {
+        if (__instance is PixelCrushers.Wrappers.UIPanel)
+        {
+            StretchImageWidth(__instance.transform.Find("Main Panel"));
+        }
     }
 }

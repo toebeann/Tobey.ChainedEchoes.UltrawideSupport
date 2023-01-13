@@ -34,6 +34,10 @@
       <HintPath>E:\XboxGames\Chained Echoes Release\Content\Chained Echoes_Data\Managed\publicized\Assembly-CSharp-publicized.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>E:\XboxGames\Chained Echoes Release\Content\Chained Echoes_Data\Managed\publicized\Assembly-CSharp-firstpass-publicized.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.RenderPipelines.Universal.Runtime">
       <HintPath>E:\XboxGames\Chained Echoes Release\Content\Chained Echoes_Data\Managed\Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
       <Private>False</Private>
