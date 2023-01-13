@@ -32,6 +32,14 @@ Ever wished you could play Chained Echoes in ultrawide? Well, now you can!
 
 ## Changelog
 
+### v0.1.3
+
+#### Ultrawide Optimisations
+
+-   Background stretching fixes [38e82e7](https://github.com/toebeann/Tobey.ChainedEchoes.UltrawideSupport/commit/38e82e7c2db045efdab9853cf19f146968239e05)
+    -   Improved keybindings background stretching fix
+    -   Added a fix for dialogue panels so that the vignette background will stretch appropriately
+
 ### v0.1.2
 
 #### Ultrawide Optimisations
