@@ -36,10 +36,17 @@ public class UltrawideSupport : BaseUnityPlugin
         }
     }
 
-    private void Start()
+    private void OnEnable()
     {
+        harmony.PatchAll(typeof(UltrawideSupport));
         SceneManager.activeSceneChanged -= SceneManager_activeSceneChanged;
         SceneManager.activeSceneChanged += SceneManager_activeSceneChanged;
+    }
+    private void OnDisable()
+    {
+        harmony.UnpatchSelf();
+        SceneManager.activeSceneChanged -= SceneManager_activeSceneChanged;
+        SceneManager.sceneLoaded -= SceneManager_sceneLoaded;
     }
 
     private void SceneManager_activeSceneChanged(Scene from, Scene to)
@@ -76,7 +83,13 @@ public class UltrawideSupport : BaseUnityPlugin
         if (scene.name != "StartMenu")
         {
             StartCoroutine(RemoveBorders());
-            SceneManager.sceneLoaded -= SceneManager_sceneLoaded;
+        }
+
+        switch (scene.name)
+        {
+            case "bf_1":
+                FixTutorialBattleBasics();
+                break;
         }
     }
 
@@ -164,12 +177,22 @@ public class UltrawideSupport : BaseUnityPlugin
     private static IEnumerator FixKeybindingsInfo()
     {
         yield return new WaitWhile(() => PartyInfoBattle.instance == null);
-        StretchImageWidth(PartyInfoBattle.instance.transform.root.Find("KeybindingsInfo/Container"));
+        StretchImage(PartyInfoBattle.instance.transform.root.Find("KeybindingsInfo/Container"));
     }
 
-    private static void StretchImageWidth(Transform container)
+    private void FixTutorialBattleBasics()
     {
-        var clone = Instantiate(container.gameObject, container.parent);
+        foreach (var tutorial in Resources.FindObjectsOfTypeAll<GameObject>().Where(x => x.name.StartsWith("Tutorial Battle Basics")))
+        {
+            var bg = tutorial.transform.Find("Container/Image");
+            StretchImage(bg, true);
+        }
+    }
+
+    private static void StretchImage(Transform container, bool square = false)
+    {
+        var clone = Instantiate(container.gameObject);
+        clone.transform.SetParent(container.parent, false);
         foreach (Transform child in clone.transform)
         {
             Destroy(child.gameObject);
@@ -178,14 +201,11 @@ public class UltrawideSupport : BaseUnityPlugin
 
         clone.transform.localScale = new(
             x: container.localScale.x / OriginalAspectRatio * CurrentAspectRatio,
-            y: container.localScale.y,
+            y: square ? container.localScale.y / OriginalAspectRatio * CurrentAspectRatio : container.localScale.y,
             z: container.localScale.z);
 
         container.GetComponent<Image>().enabled = false;
     }
-
-    private void OnEnable() => harmony.PatchAll(typeof(UltrawideSupport));
-    private void OnDisable() => harmony.UnpatchSelf();
 
     [HarmonyPatch(typeof(SplashScreenAnimation), nameof(SplashScreenAnimation.AnimationFinished))]
     [HarmonyPatch(typeof(MainMenuSystem), nameof(MainMenuSystem.ExecuteSettings))]
@@ -215,7 +235,7 @@ public class UltrawideSupport : BaseUnityPlugin
     {
         if (__instance is PixelCrushers.Wrappers.UIPanel)
         {
-            StretchImageWidth(__instance.transform.Find("Main Panel"));
+            StretchImage(__instance.transform.Find("Main Panel"));
         }
     }
 }
